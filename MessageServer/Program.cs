@@ -29,7 +29,6 @@ class Program
     static string GetMessageBasedOnTime()
     {
         DateTime now = DateTime.Now;
-        string date = now.ToString("yyyyMMddHHmmss");
         int evenCount = 0;
         int oddCount = 0;
 
@@ -44,8 +43,8 @@ class Program
             }
         }
 
-        if (evenCount > oddCount) return "чет!" + date;
-        else if (oddCount > evenCount) return "нечет!" + date;
-        else return "равно!" + date;
+        if (evenCount > oddCount) return "чет!";
+        else if (oddCount > evenCount) return "нечет!";
+        else return "равно!";
     }
 }
