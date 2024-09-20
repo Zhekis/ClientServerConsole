@@ -1,23 +1,24 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace MessageClient
+class MessageClient
 {
-    internal class Program
+    static async Task Main()
     {
-        static void Main(string[] args)
+        using (var client = new TcpClient("127.0.0.1", 5000))
+        using (var stream = client.GetStream())
         {
-            const string serverIp = "127.0.0.1";
-            const int port = 5000;
+            Console.WriteLine("Подключено к серверу.");
+            byte[] buffer = new byte[256];
 
-            using var client = new TcpClient(serverIp, port);
-            NetworkStream stream = client.GetStream();
-
-            byte[] data = new byte[256];
-            int bytes = stream.Read(data, 0, data.Length);
-            string response = Encoding.UTF8.GetString(data, 0, bytes);
-
-            Console.WriteLine("Сообщение от сервера: " + response);
+            while (true)
+            {
+                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                Console.WriteLine($"Получено сообщение: {message}");
+            }
         }
     }
 }
